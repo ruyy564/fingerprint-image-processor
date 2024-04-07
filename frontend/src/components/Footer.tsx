@@ -1,7 +1,9 @@
-export default function Footer() {
+import { Layout } from "antd";
+const { Footer } = Layout;
+export default function CustomFooter() {
   return (
-    <footer>
-      <div>Создан &copy;Klimkin243M</div>
-    </footer>
+    <Footer style={{ textAlign: "center" }}>
+      Ant Design ©{new Date().getFullYear()} Created by Ant UED
+    </Footer>
   );
 }

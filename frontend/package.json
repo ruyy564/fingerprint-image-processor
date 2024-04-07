@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.19.1",
+    "@ant-design/icons": "^5.3.6",
+    "@ant-design/nextjs-registry": "^1.0.0",
+    "antd": "^5.16.1",
     "next": "14.1.4",
     "next-auth": "^4.24.7",
     "react": "^18",

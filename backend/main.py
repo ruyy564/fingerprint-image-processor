@@ -1,7 +1,8 @@
+from typing import List
 import boto3
 import os
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI, HTTPException, Request, Response
+from fastapi import Depends, FastAPI, HTTPException, Request, Response, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 
@@ -52,24 +53,28 @@ async def main(user=Depends(validate_cloudflare)):
 
 
 @app.get("/list-fingerprints")
-async def get_list_fingerprint_by_user():
+async def get_list_fingerprint_by_user(user=Depends(validate_cloudflare)) -> List[str]:
     global s3, aws_bucket_name
-    data = []
-    prefix = "test/"
 
-    for key in s3.list_objects(Bucket=aws_bucket_name, Prefix=prefix)['Contents']:
-        data.append(key['Key'].replace(prefix, ''))
+    data = []
+    prefix = f'{user['id']}/'
+    file_list = s3.list_objects(Bucket=aws_bucket_name, Prefix=prefix)
+
+    if ('Contents' in file_list):
+        for key in file_list['Contents']:
+            data.append(key['Key'].replace(prefix, ''))
 
     return data
 
 
-@app.get("/dowload-file")
-async def download_file(filename: str):
+@app.get("/download-file")
+async def download_file(filename: str, user=Depends(validate_cloudflare)):
     global s3, aws_bucket_name
 
-    content = s3.get_object(Bucket=aws_bucket_name,
-                            Key=f'test/{filename}')['Body'].read()
+    prefix = f'{user['id']}/'
 
+    content = s3.get_object(Bucket=aws_bucket_name,
+                            Key=f'{prefix}{filename}')['Body'].read()
     return Response(
         content=content,
         headers={
@@ -80,15 +85,36 @@ async def download_file(filename: str):
 
 
 @app.delete("/delete-file")
-async def delete_file(filename: str):
+async def delete_file(filename: str, user=Depends(validate_cloudflare)):
     global s3, aws_bucket_name
 
-    forDeletion = [{'Key': filename}]
-    s3.delete_objects(Bucket=aws_bucket_name, Delete={'Objects': forDeletion})
+    prefix = f'{user['id']}/'
+
+    s3.delete_objects(Bucket=aws_bucket_name, Delete={
+                      'Objects': [{'Key': f'{prefix}{filename}'}]})
+
+    raise HTTPException(status_code=200, detail="file deleted")
 
 
 @app.post("/upload-file")
-async def upload_file(filename: str):
-    global s3, aws_bucket_name
+async def upload_file(file: UploadFile, user=Depends(validate_cloudflare)):
+    prefix = f'{user['id']}/'
 
-    s3.upload_file('my-finger.BMP', aws_bucket_name, f'test/{filename}')
+    global s3, aws_bucket_name
+    contents = await file.read()
+    s3.put_object(Bucket=aws_bucket_name,
+                  Key=f'{prefix}{file.filename}', Body=contents)
+
+    raise HTTPException(status_code=200, detail="files uploaded")
+
+
+@app.post("/upload-files")
+async def upload_file(files: List[UploadFile] = File(...), user=Depends(validate_cloudflare)):
+    prefix = f'{user['id']}/'
+
+    for file in files:
+        contents = await file.read()
+        s3.put_object(Bucket=aws_bucket_name,
+                      Key=f'{prefix}{file.filename}', Body=contents)
+
+    raise HTTPException(status_code=200, detail="files uploaded")

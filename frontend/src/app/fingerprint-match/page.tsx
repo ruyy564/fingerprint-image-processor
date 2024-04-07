@@ -1,3 +1,4 @@
+import { Button } from "antd";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,6 +10,7 @@ export default function FingerprintMatch() {
   return (
     <>
       <h1>Поиск схожего отпечатка пальцев</h1>
+      <Button type="primary">Button</Button>
     </>
   );
 }
