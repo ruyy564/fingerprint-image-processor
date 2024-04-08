@@ -1,3 +1,7 @@
+import CustomHeader from "@/components/Header";
+import MainLayout from "@/components/MainLayout";
+import { Button } from "antd";
+import Title from "antd/es/typography/Title";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,7 +13,12 @@ export const metadata: Metadata = {
 export default function FingerprintGeneratorByParams() {
   return (
     <>
-      <h1>Генерация изображений отпечатков пальцев по параметрам</h1>
+      <CustomHeader>
+        <Title>Генерация изображений отпечатков пальцев по параметрам</Title>
+      </CustomHeader>
+      <MainLayout>
+        <Button type="primary">Button</Button>
+      </MainLayout>
     </>
   );
 }

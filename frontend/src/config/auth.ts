@@ -1,7 +1,7 @@
 import { AuthOptions, User } from "next-auth";
 import YandexProvider from "next-auth/providers/yandex";
 
-export type ExtendedUserType = User & { uid?: string, accessToken?:string };
+export type ExtendedUserType = User & { uid?: string; accessToken?: string };
 export const authConfig: AuthOptions = {
   providers: [
     YandexProvider({
@@ -13,7 +13,8 @@ export const authConfig: AuthOptions = {
   callbacks: {
     async session({ session, token }) {
       (session.user as ExtendedUserType).uid = token.sub;
-      (session.user as ExtendedUserType).accessToken = token.access_token as string;
+      (session.user as ExtendedUserType).accessToken =
+        token.access_token as string;
       return session;
     },
     async jwt({ account, token }) {
@@ -28,6 +29,6 @@ export const authConfig: AuthOptions = {
   },
   session: {
     strategy: "jwt",
-    // maxAge: 5 * 60,
+    maxAge: 60 * 60 * 60,
   },
 };

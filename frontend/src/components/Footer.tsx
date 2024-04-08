@@ -1,5 +1,4 @@
-import { Layout } from "antd";
-const { Footer } = Layout;
+import { Footer } from "antd/es/layout/layout";
 export default function CustomFooter() {
   return (
     <Footer style={{ textAlign: "center" }}>

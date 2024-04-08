@@ -1,26 +1,28 @@
 "use client";
 
-import { Header } from "antd/es/layout/layout";
 import { theme } from "antd";
+import { Content } from "antd/es/layout/layout";
 
-export default function CustomHeader({
+export default function MainLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
   return (
-    <Header
+    <Content
       style={{
         margin: "0 20px",
         padding: 15,
+        height: "100%",
         background: colorBgContainer,
-        borderRadius: "0 0 10px 10px",
+        borderRadius: "10px 10px 0 0",
       }}
     >
       {children}
-    </Header>
+    </Content>
   );
 }

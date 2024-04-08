@@ -1,97 +1,61 @@
 "use client";
-import { Layout, Menu, theme } from "antd";
+import { Flex, Layout, Menu } from "antd";
 import { useState } from "react";
-import type { MenuProps } from "antd";
 import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
+  CloudServerOutlined,
+  FileZipOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
+import { Profile } from "./Profile";
 
-type MenuItem = Required<MenuProps>["items"][number];
-
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[]
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  } as MenuItem;
-}
-
-const items: MenuItem[] = [
-  getItem(<Link href={"/"}>Главная</Link>, "10", <PieChartOutlined />),
-  getItem(
-    <Link href={"/fingerprint-generator-by-params"}>
-      Генерация изображенийная
-    </Link>,
-    "20",
-    <PieChartOutlined />
-  ),
-  getItem(
-    <Link href={"/fingerprint-match"}>Поиск схожего отпечатка пальца</Link>,
-    "30",
-    <PieChartOutlined />
-  ),
-];
-
-const authItems: MenuItem[] = [
-  getItem("Пользователь", "1", <PieChartOutlined />, [
-    getItem(<Link href={"/profile"}>Профиль</Link>, "2", <PieChartOutlined />),
-    getItem(
-      <Link
-        href={"#"}
-        onClick={() =>
-          signOut({
-            callbackUrl: "/",
-          })
-        }
-      >
-        Выйти
-      </Link>,
-      "60",
-      <PieChartOutlined />
+const menuItems = [
+  {
+    key: 1,
+    label: <Link href={"/"}>Поиск схожего отпечатка пальца</Link>,
+    icon: <SearchOutlined />,
+  },
+  {
+    key: 2,
+    label: (
+      <Link href={"/fingerprint-generator-by-params"}>
+        Генерация изображенийная
+      </Link>
     ),
-  ]),
-];
-const notAuthItems: MenuItem[] = [
-  getItem(
-    <Link href={"/api/auth/signin"}>Вход</Link>,
-    "50",
-    <PieChartOutlined />
-  ),
+    icon: <FileZipOutlined />,
+  },
+  {
+    key: 3,
+    label: <Link href={"/fingerprint-db"}>Наборы файлов</Link>,
+    icon: <CloudServerOutlined />,
+  },
 ];
 
 export const Sider = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const session = useSession();
 
   return (
     <Layout.Sider
       collapsible
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
+      theme="light"
+      width={320}
     >
-      <div className="demo-logo-vertical" />
-      {session?.data && <Menu theme="dark" mode="inline" items={authItems} />}
-      <Menu
-        theme="dark"
-        defaultSelectedKeys={["10"]}
-        mode="inline"
-        items={items}
-      />
-      {!session?.data && (
-        <Menu theme="dark" mode="inline" items={notAuthItems} />
-      )}
+      <Flex
+        gap="middle"
+        vertical
+        align="center"
+        style={{ padding: "10px 0", width: "100%" }}
+      >
+        <Profile />
+        <Menu
+          defaultSelectedKeys={["1"]}
+          mode="inline"
+          items={menuItems}
+          style={{ width: "100%" }}
+        />
+      </Flex>
     </Layout.Sider>
   );
 };
