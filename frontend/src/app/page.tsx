@@ -13,7 +13,7 @@ export default function FingerprintMatch() {
   return (
     <>
       <CustomHeader>
-        <Title>Поиск схожего отпечатка пальцев</Title>
+        <Title ellipsis>Поиск схожего отпечатка пальцев</Title>
       </CustomHeader>
       <MainLayout>
         <Button type="primary">Button</Button>

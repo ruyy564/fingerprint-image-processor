@@ -16,12 +16,13 @@ export default function Home() {
   return (
     <>
       <CustomHeader>
-        <Title>Набор отпечатков пальцев</Title>
+        <Title ellipsis>Набор отпечатков пальцев</Title>
       </CustomHeader>
       <MainLayout>
         <Flex vertical gap={30}>
-          <Title>Набор файлов</Title>
-          <UploadFiles />
+          <Flex gap={30}>
+            <UploadFiles />
+          </Flex>
           <ListFile />
         </Flex>
       </MainLayout>

@@ -14,7 +14,9 @@ export default function FingerprintGeneratorByParams() {
   return (
     <>
       <CustomHeader>
-        <Title>Генерация изображений отпечатков пальцев по параметрам</Title>
+        <Title ellipsis>
+          Генерация изображений отпечатков пальцев по параметрам
+        </Title>
       </CustomHeader>
       <MainLayout>
         <Button type="primary">Button</Button>

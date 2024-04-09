@@ -5,24 +5,52 @@ import { LoginOutlined } from "@ant-design/icons";
 import { Avatar, Button, List, Menu, Popover, Skeleton } from "antd";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 
 const menuItems = [
   {
     key: 4,
-    label: <Link href={"/api/auth/signin"}>Вход</Link>,
-    icon: <LoginOutlined />,
+    label: <Link href={"/api/auth/signin"}>Вход в систему</Link>,
+    icon: (
+      <Image
+        priority
+        src="/yandex.svg"
+        height={16}
+        width={16}
+        alt="Лого яндекса"
+      />
+    ),
+  },
+];
+
+const profileItems = [
+  {
+    key: 5,
+    label: "Профиль",
+    icon: (
+      <Image
+        priority
+        src="/yandex.svg"
+        height={16}
+        width={16}
+        alt="Лого яндекса"
+      />
+    ),
   },
 ];
 
 export const Profile = () => {
   const session = useSession();
 
-  if (session.status === "loading") {
-    return <Skeleton.Avatar active size={64} shape={"circle"} />;
-  }
-
   if (!session.data?.user) {
-    return <Menu mode="inline" items={menuItems} />;
+    return (
+      <Menu
+        items={menuItems}
+        style={{
+          width: "100%",
+        }}
+      />
+    );
   }
 
   const hide = () => {
@@ -34,7 +62,20 @@ export const Profile = () => {
   return (
     <Popover
       content={
-        <List>
+        <List
+          style={{
+            width: "350px",
+          }}
+        >
+          <List.Item>
+            <Avatar
+              size={64}
+              icon={
+                <img src={session.data?.user?.image as string} alt="Профиль" />
+              }
+            />
+          </List.Item>
+
           <List.Item>ФИО: {session.data?.user?.name}</List.Item>
           <List.Item>Email: {session.data?.user?.email}</List.Item>
           <List.Item>
@@ -48,11 +89,12 @@ export const Profile = () => {
       trigger="click"
       placement="rightBottom"
     >
-      <Avatar
-        size={64}
-        icon={<img src={session.data?.user?.image as string} alt="Профиль" />}
+      <Menu
+        items={profileItems}
+        mode="inline"
+        selectable={false}
         style={{
-          cursor: "pointer",
+          width: "100%",
         }}
       />
     </Popover>

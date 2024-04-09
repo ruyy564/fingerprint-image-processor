@@ -1,49 +1,42 @@
 "use client";
 
-import { uploadFileFingerprint } from "@/services/fingerprintService";
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Flex, GetProp, Upload, UploadFile, UploadProps } from "antd";
+import { Button, Flex, Upload, message } from "antd";
 
-import { useState } from "react";
-import { mutate } from "swr";
-import useSWRMutation from "swr/mutation";
-
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+import { useUploadFile } from "../hooks/useUploadFile";
 
 export const UploadFiles = () => {
-  const [file, setFile] = useState<UploadFile | null>(null);
+  const { fileList, setFileList, uploadFileHandler, onRemoveFile } =
+    useUploadFile();
 
-  const { trigger } = useSWRMutation(
-    `/upload-file`,
-    () => {
-      const formData = new FormData();
-      formData.append("file", file as FileType);
-
-      uploadFileFingerprint(formData);
-    },
-    {
-      onSuccess: () => {
-        mutate("/list-fingerprints");
-      },
-    }
-  );
-
-  const handleUpload = async () => {
-    trigger();
-  };
   return (
     <Flex gap={15}>
       <Upload
+        onRemove={onRemoveFile}
+        fileList={fileList}
+        multiple={false}
         beforeUpload={(file) => {
-          setFile(file);
+          const isZIP = file.type === "application/x-zip-compressed";
+
+          if (!isZIP) {
+            message.error(`${file.name} is not a ZIP file`);
+
+            return false;
+          }
+
+          setFileList([file]);
         }}
-        onRemove={(file) => {
-          setFile(null);
-        }}
+        accept={".zip"}
       >
-        <Button icon={<UploadOutlined />}>Выберете zip файл</Button>
+        <Button icon={<UploadOutlined />}>
+          Выберете zip-файл для дабавления в БД
+        </Button>
       </Upload>
-      {file && <Button onClick={handleUpload}>Загрузить</Button>}
+      {fileList.length !== 0 && (
+        <Button type="primary" onClick={uploadFileHandler}>
+          Загрузить в БД
+        </Button>
+      )}
     </Flex>
   );
 };

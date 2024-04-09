@@ -8,31 +8,48 @@ import {
 } from "@ant-design/icons";
 import Link from "next/link";
 import { Profile } from "./Profile";
+import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
-const menuItems = [
-  {
-    key: 1,
-    label: <Link href={"/"}>Поиск схожего отпечатка пальца</Link>,
-    icon: <SearchOutlined />,
-  },
-  {
-    key: 2,
-    label: (
-      <Link href={"/fingerprint-generator-by-params"}>
-        Генерация изображенийная
-      </Link>
-    ),
-    icon: <FileZipOutlined />,
-  },
-  {
-    key: 3,
-    label: <Link href={"/fingerprint-db"}>Наборы файлов</Link>,
-    icon: <CloudServerOutlined />,
-  },
-];
+const keysMenu = {
+  "/": "1",
+  "/fingerprint-generator-by-params": "2",
+  "/fingerprint-db": "3",
+};
 
 export const Sider = () => {
+  const session = useSession();
+  const pathname = usePathname();
+
   const [collapsed, setCollapsed] = useState(false);
+
+  const menuItems = [
+    {
+      key: 1,
+      label: <Link href={"/"}>Поиск схожего отпечатка пальца</Link>,
+      icon: <SearchOutlined />,
+    },
+    {
+      key: 2,
+      label: (
+        <Link href={"/fingerprint-generator-by-params"}>
+          Генерация изображений
+        </Link>
+      ),
+      icon: <FileZipOutlined />,
+    },
+  ];
+
+  if (session.data?.user) {
+    menuItems.push({
+      key: 3,
+      label: <Link href={"/fingerprint-db"}>Набор отпечатков пальцев</Link>,
+      icon: <CloudServerOutlined />,
+    });
+  }
+
+  const selectedKey = keysMenu[pathname as keyof typeof keysMenu];
 
   return (
     <Layout.Sider
@@ -46,15 +63,24 @@ export const Sider = () => {
         gap="middle"
         vertical
         align="center"
-        style={{ padding: "10px 0", width: "100%" }}
+        style={{ padding: "10px 0", width: "100%", height: "100%" }}
       >
-        <Profile />
-        <Menu
-          defaultSelectedKeys={["1"]}
-          mode="inline"
-          items={menuItems}
-          style={{ width: "100%" }}
-        />
+        <Image priority src="/logo.svg" height={64} width={64} alt="Лого" />
+        <Flex
+          gap="middle"
+          vertical
+          align="center"
+          justify="space-between"
+          style={{ padding: "10px 0", width: "100%", height: "100%" }}
+        >
+          <Menu
+            selectedKeys={[selectedKey]}
+            mode="inline"
+            items={menuItems}
+            style={{ width: "100%" }}
+          />
+          <Profile />
+        </Flex>
       </Flex>
     </Layout.Sider>
   );
