@@ -1,6 +1,6 @@
 import CustomHeader from "@/components/Header";
 import MainLayout from "@/components/MainLayout";
-import { Button } from "antd";
+import { Skeleton } from "antd";
 import Title from "antd/es/typography/Title";
 import { Metadata } from "next";
 
@@ -16,7 +16,7 @@ export default function FingerprintMatch() {
         <Title ellipsis>Поиск схожего отпечатка пальцев</Title>
       </CustomHeader>
       <MainLayout>
-        <Button type="primary">Button</Button>
+        <Skeleton />
       </MainLayout>
     </>
   );

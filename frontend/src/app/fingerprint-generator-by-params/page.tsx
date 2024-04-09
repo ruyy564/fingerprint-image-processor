@@ -1,6 +1,6 @@
 import CustomHeader from "@/components/Header";
 import MainLayout from "@/components/MainLayout";
-import { Button } from "antd";
+import { Button, Skeleton } from "antd";
 import Title from "antd/es/typography/Title";
 import { Metadata } from "next";
 
@@ -19,7 +19,7 @@ export default function FingerprintGeneratorByParams() {
         </Title>
       </CustomHeader>
       <MainLayout>
-        <Button type="primary">Button</Button>
+        <Skeleton />
       </MainLayout>
     </>
   );

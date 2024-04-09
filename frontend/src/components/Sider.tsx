@@ -65,7 +65,9 @@ export const Sider = () => {
         align="center"
         style={{ padding: "10px 0", width: "100%", height: "100%" }}
       >
-        <Image priority src="/logo.svg" height={64} width={64} alt="Лого" />
+        <Link href={"/"}>
+          <Image priority src="/logo.svg" height={64} width={64} alt="Лого" />
+        </Link>
         <Flex
           gap="middle"
           vertical

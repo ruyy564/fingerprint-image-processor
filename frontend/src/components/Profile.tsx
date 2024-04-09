@@ -67,7 +67,7 @@ export const Profile = () => {
             width: "350px",
           }}
         >
-          <List.Item>
+          <List.Item style={{ display: "flex", justifyContent: "center" }}>
             <Avatar
               size={64}
               icon={
