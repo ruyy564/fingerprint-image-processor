@@ -1,14 +1,12 @@
-from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers.aws import routerAws
-from routers.match_fingerprint import routerMatchFingerprint
 
-load_dotenv()
-
+from routers.aws import router_aws
+from routers.analyze_fingerprint import router_analyze_fingerprints
 
 # инициализация FastAPI
 app = FastAPI()
+# настройка политики CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -21,12 +19,12 @@ app.add_middleware(
 
 
 # API для работы с AWS
-app.include_router(routerAws)
+app.include_router(router_aws)
 # APL для работы с отпечатками пальцев
-app.include_router(routerMatchFingerprint)
+app.include_router(router_analyze_fingerprints)
 
 
-# Проверка соединения
+# Тест API
 @app.get("/")
 async def main():
-    return {"user": "Hello"}
+    return "Hello"

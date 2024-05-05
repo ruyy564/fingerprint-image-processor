@@ -1,91 +1,42 @@
 from typing import List
-from dotenv import load_dotenv
-from fastapi import Depends, APIRouter, HTTPException, Response, UploadFile, File
+from fastapi import Depends, APIRouter, UploadFile, File
 
-from utils import validate_cloudflare, aws_bucket_name, s3
+from utils import validate_cloudflare
 
-routerAws = APIRouter()
+from controllers.aws.get_list_fingerprints_by_user import get_list_fingerprints_by_user
+from controllers.aws.download_file import download_file
+from controllers.aws.delete_file import delete_file
+from controllers.aws.upload_file import upload_file
+from controllers.aws.upload_files import upload_files
 
-load_dotenv()
+router_aws = APIRouter(prefix='/aws')
 
 
 # получение списка папок пользователя с отпечатками пальцев
-@routerAws.get("/list-fingerprints")
-async def get_list_fingerprint_by_user(user=Depends(validate_cloudflare)) -> List[str]:
-    try:
-        data = []
-        prefix = f'{user['id']}/'
-        file_list = s3.list_objects(Bucket=aws_bucket_name, Prefix=prefix)
-
-        if ('Contents' in file_list):
-            for key in file_list['Contents']:
-                data.append(key['Key'].replace(prefix, ''))
-
-        return data
-    except Exception:
-        raise HTTPException(
-            status_code=403, detail="The folder list is not available")
+@router_aws.get("/list-fingerprints")
+async def route_get_list_fingerprints_by_user(user=Depends(validate_cloudflare)) -> List[str]:
+    return await get_list_fingerprints_by_user(user)
 
 
 # скачать папку с отпечатками пальцев в формате zip
-@routerAws.get("/download-file")
-async def download_file(filename: str, user=Depends(validate_cloudflare)):
-    try:
-        prefix = f'{user['id']}/'
-
-        content = s3.get_object(Bucket=aws_bucket_name,
-                                Key=f'{prefix}{filename}')['Body'].read()
-        return Response(
-            content=content,
-            headers={
-                'Content-Disposition': f'attachment;filename={filename}',
-                'Content-type': 'application/x-zip-compressed'
-            }
-        )
-    except Exception:
-        raise HTTPException(
-            status_code=403, detail="Unable to download this file")
+@router_aws.get("/download-file")
+async def route_download_file(filename: str, user=Depends(validate_cloudflare)):
+    return await download_file(filename, user)
 
 
 # удалить папку с отпечатками пальцев
-@routerAws.delete("/delete-file")
-async def delete_file(filename: str, user=Depends(validate_cloudflare)):
-    try:
-        prefix = f'{user['id']}/'
-
-        s3.delete_objects(Bucket=aws_bucket_name, Delete={
-            'Objects': [{'Key': f'{prefix}{filename}'}]})
-
-        raise HTTPException(status_code=200, detail="The file is deleted")
-    except Exception:
-        raise HTTPException(status_code=403, detail="The file is not deleted")
+@router_aws.delete("/delete-file")
+async def route_delete_file(filename: str, user=Depends(validate_cloudflare)):
+    return await delete_file(filename, user)
 
 
 # загрузить папку с отпечатками пальцев
-@routerAws.post("/upload-file")
-async def upload_file(file: UploadFile, user=Depends(validate_cloudflare)):
-    try:
-        prefix = f'{user['id']}/'
-        contents = await file.read()
-        s3.put_object(Bucket=aws_bucket_name,
-                      Key=f'{prefix}{file.filename}', Body=contents)
-
-        raise HTTPException(status_code=200, detail="The file is uploaded")
-    except Exception:
-        raise HTTPException(status_code=403, detail="The file is not uploaded")
+@router_aws.post("/upload-file")
+async def route_upload_file(file: UploadFile, user=Depends(validate_cloudflare)):
+    return await upload_file(file, user)
 
 
 # загрузуть несколько папок с отпечатками пальцев
-@routerAws.post("/upload-files")
-async def upload_file(files: List[UploadFile] = File(...), user=Depends(validate_cloudflare)):
-    try:
-        prefix = f'{user['id']}/'
-
-        for file in files:
-            contents = await file.read()
-            s3.put_object(Bucket=aws_bucket_name,
-                          Key=f'{prefix}{file.filename}', Body=contents)
-
-        raise HTTPException(status_code=200, detail="Files are uploaded")
-    except Exception:
-        raise HTTPException(status_code=403, detail="Files are not uploaded")
+@router_aws.post("/upload-files")
+async def route_upload_files(files: List[UploadFile] = File(...), user=Depends(validate_cloudflare)):
+    return await upload_files(files, user)

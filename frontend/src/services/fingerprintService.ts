@@ -1,7 +1,7 @@
 import { FETCH_SIDE, fetchWrapper } from "./fetchWrapper";
 
 export const getListFileFingerprints = async () => {
-  const data = await fetchWrapper(FETCH_SIDE.CLIENT, "/list-fingerprints");
+  const data = await fetchWrapper(FETCH_SIDE.CLIENT, "/aws/list-fingerprints");
 
   return data.json();
 };
@@ -9,7 +9,7 @@ export const getListFileFingerprints = async () => {
 export const deleteFileFingerprint = async (filename: string) => {
   const data = await fetchWrapper(
     FETCH_SIDE.CLIENT,
-    `/delete-file?filename=${filename}`,
+    `/aws/delete-file?filename=${filename}`,
     {
       method: "DELETE",
     }
@@ -21,7 +21,7 @@ export const deleteFileFingerprint = async (filename: string) => {
 export const downloadFileFingerprint = async (filename: string) => {
   const data = await fetchWrapper(
     FETCH_SIDE.CLIENT,
-    `/download-file?filename=${filename}`,
+    `/aws/download-file?filename=${filename}`,
     {
       headers: {
         "Content-Type": "application/octet-stream",
@@ -33,7 +33,7 @@ export const downloadFileFingerprint = async (filename: string) => {
 };
 
 export const uploadFileFingerprint = async (file: FormData) => {
-  const data = await fetchWrapper(FETCH_SIDE.CLIENT, "/upload-file", {
+  const data = await fetchWrapper(FETCH_SIDE.CLIENT, "/aws/upload-file", {
     method: "POST",
     body: file,
   });
