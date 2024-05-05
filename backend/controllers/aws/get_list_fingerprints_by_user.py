@@ -3,10 +3,10 @@
 from typing import List
 from fastapi import HTTPException
 
-from utils import aws_bucket_name, s3
+from utils.aws_session import aws_bucket_name, s3
 
 
-# получение списка папок пользователя с отпечатками пальцев
+# получение списка zip-файлов пользователя с отпечатками пальцев
 async def get_list_fingerprints_by_user(user) -> List[str]:
     try:
         data = []

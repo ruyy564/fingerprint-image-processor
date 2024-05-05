@@ -6,11 +6,10 @@ from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 import numpy as np
 
-from utils import aws_bucket_name, s3
+from utils.aws_session import aws_bucket_name, s3
+
 
 # сравнение изображений по сегментам
-
-
 def match_images(image_1, image_2):
     sift = cv2.SIFT.create()
 
@@ -109,6 +108,6 @@ async def match_fingerprints(filename: str, file, user):
             },
             status_code=200
         )
-    except Exception as e:
+    except Exception:
         raise HTTPException(
             status_code=403, detail="Image comparison error")

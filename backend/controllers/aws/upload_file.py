@@ -1,9 +1,9 @@
 from fastapi import HTTPException, Response
 
-from utils import aws_bucket_name, s3
+from utils.aws_session import aws_bucket_name, s3
 
 
-# загрузить папку с отпечатками пальцев
+# загрузить zip-файл с отпечатками пальцев
 async def upload_file(file, user):
     try:
         prefix = f'{user['id']}/'

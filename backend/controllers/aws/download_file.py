@@ -1,9 +1,9 @@
 from fastapi import HTTPException, Response
 
-from utils import aws_bucket_name, s3
+from utils.aws_session import aws_bucket_name, s3
 
 
-# скачать папку с отпечатками пальцев в формате zip
+# скачать zip-файл с отпечатками пальцев
 async def download_file(filename: str, user):
     try:
         prefix = f'{user['id']}/'
