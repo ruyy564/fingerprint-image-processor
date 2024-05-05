@@ -1,19 +1,20 @@
 "use client";
 
 import { DeleteOutlined, DownloadOutlined } from "@ant-design/icons";
-import { Button, Flex, List, Spin } from "antd";
+import { Alert, Button, Flex, List, Spin } from "antd";
 import { useDeleteFile } from "../hooks/useDeleteFile";
 import { useGetFileList } from "../hooks/useGetFileList";
 import { useDownloadFile } from "../hooks/useDownloadFile";
 
 export const ListFile = () => {
-  const { fileList, isLoadingFileList } = useGetFileList();
+  const { fileList, isLoadingFileList,error } = useGetFileList();
 
   const { deleteFileHandler } = useDeleteFile();
   const { downloadFileHandler, isLoadingDownloadFile } = useDownloadFile();
 
   return (
     <Flex vertical align="center">
+      {error && <Alert message={error?.message} type={'error'}/>}
       <Spin
         spinning={isLoadingDownloadFile}
         tip="...Идет скачивание файла"

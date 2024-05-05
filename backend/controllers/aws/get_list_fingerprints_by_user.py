@@ -12,7 +12,7 @@ async def get_list_fingerprints_by_user(user) -> List[str]:
         data = []
         prefix = f'{user['id']}/'
         file_list = s3.list_objects(Bucket=aws_bucket_name, Prefix=prefix)
-
+        
         if ('Contents' in file_list):
             for key in file_list['Contents']:
                 data.append(key['Key'].replace(prefix, ''))

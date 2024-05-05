@@ -5,7 +5,11 @@ const awsPrefix = "/aws";
 export const getListFilesFingerprints = async () => {
   const data = await fetchWrapper(`${awsPrefix}/list-fingerprints`);
 
-  return data.json();
+  if(data.ok){
+    return data.json();
+  }
+
+  throw new Error(data.statusText)
 };
 
 export const deleteFileFingerprint = async (filename: string) => {
@@ -16,7 +20,11 @@ export const deleteFileFingerprint = async (filename: string) => {
     }
   );
 
-  return data.body;
+  if(data.ok){
+    return data.body;
+  }
+
+  throw new Error(data.statusText)
 };
 
 export const downloadFileFingerprint = async (filename: string) => {
@@ -29,7 +37,11 @@ export const downloadFileFingerprint = async (filename: string) => {
     }
   );
 
-  return data.blob();
+  if(data.ok){
+    return data.blob();
+  }
+
+  throw new Error(data.statusText)
 };
 
 export const uploadFileFingerprint = async (file: FormData) => {
@@ -38,5 +50,9 @@ export const uploadFileFingerprint = async (file: FormData) => {
     body: file,
   });
 
-  return data.body;
+  if(data.ok){
+    return data.body;
+  }
+
+  throw new Error(data.statusText)
 };
