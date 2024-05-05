@@ -1,27 +1,27 @@
-import { FETCH_SIDE, fetchWrapper } from "./fetchWrapper";
+import { fetchWrapper } from "./fetchWrapper";
 
-export const getListFileFingerprints = async () => {
-  const data = await fetchWrapper(FETCH_SIDE.CLIENT, "/aws/list-fingerprints");
+const awsPrefix = "/aws";
+
+export const getListFilesFingerprints = async () => {
+  const data = await fetchWrapper(`${awsPrefix}/list-fingerprints`);
 
   return data.json();
 };
 
 export const deleteFileFingerprint = async (filename: string) => {
   const data = await fetchWrapper(
-    FETCH_SIDE.CLIENT,
-    `/aws/delete-file?filename=${filename}`,
+    `${awsPrefix}/delete-file?filename=${filename}`,
     {
       method: "DELETE",
     }
   );
 
-  return data.blob();
+  return data.body;
 };
 
 export const downloadFileFingerprint = async (filename: string) => {
   const data = await fetchWrapper(
-    FETCH_SIDE.CLIENT,
-    `/aws/download-file?filename=${filename}`,
+    `${awsPrefix}/download-file?filename=${filename}`,
     {
       headers: {
         "Content-Type": "application/octet-stream",
@@ -33,10 +33,10 @@ export const downloadFileFingerprint = async (filename: string) => {
 };
 
 export const uploadFileFingerprint = async (file: FormData) => {
-  const data = await fetchWrapper(FETCH_SIDE.CLIENT, "/aws/upload-file", {
+  const data = await fetchWrapper(`${awsPrefix}/upload-file`, {
     method: "POST",
     body: file,
   });
 
-  return data.json();
+  return data.body;
 };

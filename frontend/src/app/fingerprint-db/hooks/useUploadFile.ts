@@ -1,4 +1,4 @@
-import { uploadFileFingerprint } from "@/services/fingerprintService";
+import { uploadFileFingerprint } from "@/services/awsService";
 import { GetProp, UploadFile, UploadProps } from "antd";
 import { useState } from "react";
 import { mutate, useSWRConfig } from "swr";

@@ -1,4 +1,4 @@
-import { downloadFileFingerprint } from "@/services/fingerprintService";
+import { downloadFileFingerprint } from "@/services/awsService";
 import useSWRMutation from "swr/mutation";
 import { FetchFileParams } from "../types";
 

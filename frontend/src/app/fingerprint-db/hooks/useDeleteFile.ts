@@ -1,4 +1,4 @@
-import { deleteFileFingerprint } from "@/services/fingerprintService";
+import { deleteFileFingerprint } from "@/services/awsService";
 import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { FetchFileParams } from "../types";
