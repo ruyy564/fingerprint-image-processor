@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   CloudServerOutlined,
   FileZipOutlined,
+  HomeOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
@@ -16,8 +17,9 @@ import { useWindowSize } from "@/shared/hooks/useWindowSize";
 
 const keysMenu = {
   "/": "1",
-  "/fingerprint-generator-by-params": "2",
-  "/fingerprint-db": "3",
+  "/fingerprint-match": "2",
+  "/fingerprint-generator-by-params": "3",
+  "/fingerprint-db": "4",
 };
 
 export const Sider = () => {
@@ -30,26 +32,39 @@ export const Sider = () => {
   const menuItems = [
     {
       key: 1,
-      label: <Link href={"/"}>Поиск схожего отпечатка пальца</Link>,
-      icon: <SearchOutlined />,
-    },
-    {
-      key: 2,
-      label: (
-        <Link href={"/fingerprint-generator-by-params"}>
-          Генерация изображений
-        </Link>
-      ),
-      icon: <FileZipOutlined />,
+      label: <Link href={"/"}>Главная</Link>,
+      icon: <HomeOutlined />,
     },
   ];
 
   if (session.data?.user) {
-    menuItems.push({
-      key: 3,
-      label: <Link href={"/fingerprint-db"}>Набор отпечатков пальцев</Link>,
-      icon: <CloudServerOutlined />,
-    });
+    menuItems.push(
+      ...[
+        {
+          key: 2,
+          label: (
+            <Link href={"/fingerprint-match"}>
+              Поиск схожего отпечатка пальца
+            </Link>
+          ),
+          icon: <SearchOutlined />,
+        },
+        {
+          key: 3,
+          label: (
+            <Link href={"/fingerprint-generator-by-params"}>
+              Генерация изображений
+            </Link>
+          ),
+          icon: <FileZipOutlined />,
+        },
+        {
+          key: 4,
+          label: <Link href={"/fingerprint-db"}>Набор отпечатков пальцев</Link>,
+          icon: <CloudServerOutlined />,
+        },
+      ]
+    );
   }
 
   const selectedKey = keysMenu[pathname as keyof typeof keysMenu];

@@ -1,33 +1,54 @@
-import { Skeleton } from "antd";
 import Title from "antd/es/typography/Title";
+import Paragraph from "antd/es/typography/Paragraph";
 import { Metadata } from "next";
-import Image from "next/image";
+import Link from "next/link";
+import { getServerSession } from "next-auth/next";
 
 import CustomHeader from "@/shared/components/Header";
 import MainLayout from "@/shared/components/MainLayout";
 
+import { authConfig } from "@/shared/config/auth";
+
 export const metadata: Metadata = {
-  title: "Обработка отпечатков пальцев | Сравнение отпечатков пальцев",
+  title: "Обработка отпечатков пальцев | Главная",
   description: "Обработка отпечатков пальцев",
 };
 
-export default function FingerprintMatch() {
-  const data = "";
+export default async function FingerprintMatch() {
+  const session = await getServerSession(authConfig);
 
   return (
     <>
       <CustomHeader>
-        <Title ellipsis>Поиск схожего отпечатка пальцев</Title>
+        <Title ellipsis>Главная страница</Title>
       </CustomHeader>
       <MainLayout>
-        <Image
-          src={`data:image/jpeg;base64,${data}`}
-          width={60}
-          height={60}
-          priority
-          alt={"результат сравенения изображений"}
-        />
-        <Skeleton />
+        <Paragraph>
+          Добро пожаловать в наше приложение! Здесь вы можете легко и быстро
+          обработать изображения отпечатков пальцев, сравнить их и даже
+          сгенерировать новые.
+        </Paragraph>
+        <Title level={4}>Функции приложения:</Title>
+        <Paragraph>
+          <ol>
+            <li>
+              Обработка изображений: загрузите изображение отпечатка пальца и
+              получите его обработанную версию.
+            </li>
+            <li>
+              Сравнение отпечатков: сравните два отпечатка пальца, чтобы
+              определить их сходство.
+            </li>
+            <li>
+              Генерация отпечатков: сгенерируйте новый отпечаток пальца для
+              использования в целях тестирования или обучения.
+            </li>
+          </ol>
+        </Paragraph>
+        <Paragraph>Начните работу с приложением прямо сейчас!</Paragraph>
+        {!session?.user && (
+          <Link href={"/api/auth/signin"}>Авторизаваться в системе</Link>
+        )}
       </MainLayout>
     </>
   );
