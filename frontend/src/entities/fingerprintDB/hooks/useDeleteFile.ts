@@ -1,7 +1,7 @@
-import { deleteFileFingerprint } from "@/services/awsService";
+import { deleteFileFingerprint } from "@/shared/api/fingerprintsDB";
 import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
-import { FetchFileParams } from "../types";
+import { FetchFileParams } from "../../../app/fingerprint-db/types";
 
 export const useDeleteFile = () => {
   const { mutate } = useSWRConfig();

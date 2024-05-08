@@ -1,4 +1,4 @@
-import { getListFilesFingerprints } from "@/services/awsService";
+import { getListFilesFingerprints } from "@/shared/api/fingerprintsDB";
 import useSWR from "swr";
 
 export const useGetFileList = () => {
@@ -6,8 +6,12 @@ export const useGetFileList = () => {
     data: fileList,
     isLoading: isLoadingFileList,
     isValidating,
-    error
+    error,
   } = useSWR<string[]>("/list-fingerprints", getListFilesFingerprints);
 
-  return { fileList, isLoadingFileList: isLoadingFileList || isValidating,error };
+  return {
+    fileList,
+    isLoadingFileList: isLoadingFileList || isValidating,
+    error,
+  };
 };

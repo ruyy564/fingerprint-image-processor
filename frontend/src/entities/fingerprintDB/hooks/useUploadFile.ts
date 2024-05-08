@@ -1,4 +1,4 @@
-import { uploadFileFingerprint } from "@/services/awsService";
+import { uploadFileFingerprint } from "@/shared/api/fingerprintsDB";
 import { GetProp, UploadFile, UploadProps } from "antd";
 import { useState } from "react";
 import { mutate, useSWRConfig } from "swr";
@@ -15,20 +15,18 @@ export const useUploadFile = () => {
     `/upload-file`,
     () => {
       const formData = new FormData();
-      console.log("test", fileList);
       formData.append("file", fileList[0] as FileType);
 
       uploadFileFingerprint(formData);
     },
     {
       onSuccess: () => {
-        console.log("dfgdf");
         mutate("/list-fingerprints");
         setFileList([]);
       },
     }
   );
-  console.log(fileList);
+
   const uploadFileHandler = () => {
     trigger();
   };

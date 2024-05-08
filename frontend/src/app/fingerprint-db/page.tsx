@@ -1,11 +1,11 @@
-import CustomHeader from "@/components/Header";
-import MainLayout from "@/components/MainLayout";
+import CustomHeader from "@/shared/components/Header";
+import MainLayout from "@/shared/components/MainLayout";
 
 import Title from "antd/es/typography/Title";
 import { Metadata } from "next";
 import { ListFile } from "./components/ListFile";
 import { UploadFiles } from "./components/UploadFile";
-import { Flex, Space } from "antd";
+import { Flex } from "antd";
 
 export const metadata: Metadata = {
   title: "Обработка отпечатков пальцев | Набор отпечатков",

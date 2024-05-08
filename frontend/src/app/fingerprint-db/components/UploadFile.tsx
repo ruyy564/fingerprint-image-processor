@@ -3,7 +3,7 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Flex, Upload, message } from "antd";
 
-import { useUploadFile } from "../hooks/useUploadFile";
+import { useUploadFile } from "@/entities/fingerprintDB/hooks";
 
 export const UploadFiles = () => {
   const { fileList, setFileList, uploadFileHandler, onRemoveFile } =

@@ -1,8 +1,8 @@
 import { Flex, Layout } from "antd";
-import { Sider } from "./Sider";
-import { Content } from "antd/es/layout/layout";
 
-export default function CustomLayout({
+import { Sider } from "./Sider";
+
+export function Mainlayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

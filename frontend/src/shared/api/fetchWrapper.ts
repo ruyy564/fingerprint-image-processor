@@ -1,4 +1,4 @@
-import { ExtendedUserType } from "@/config/auth";
+import { ExtendedUserType } from "@/shared/config/auth";
 import { getSession } from "next-auth/react";
 
 export const fetchWrapper = async (

@@ -1,8 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { LoginOutlined } from "@ant-design/icons";
-import { Avatar, Button, List, Menu, Popover, Skeleton } from "antd";
+import { Avatar, Button, List, Menu, Popover } from "antd";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";

@@ -1,6 +1,6 @@
-import CustomHeader from "@/components/Header";
-import MainLayout from "@/components/MainLayout";
-import { Button, Skeleton } from "antd";
+import CustomHeader from "@/shared/components/Header";
+import MainLayout from "@/shared/components/MainLayout";
+import { Skeleton } from "antd";
 import Title from "antd/es/typography/Title";
 import { Metadata } from "next";
 

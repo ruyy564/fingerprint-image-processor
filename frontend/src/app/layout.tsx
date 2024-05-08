@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Layout from "@/components/Layout";
-import { Providers } from "@/components/Providers";
-import StyledComponentsRegistry from "@/components/AntdRegistry";
+import { Mainlayout } from "@/widgets/MainLayont";
+import { Providers } from "@/providers";
 
 import "./globals.css";
 
@@ -21,11 +20,9 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={inter.className}>
-        <StyledComponentsRegistry>
-          <Providers>
-            <Layout>{children}</Layout>
-          </Providers>
-        </StyledComponentsRegistry>
+        <Providers>
+          <Mainlayout>{children}</Mainlayout>
+        </Providers>
       </body>
     </html>
   );

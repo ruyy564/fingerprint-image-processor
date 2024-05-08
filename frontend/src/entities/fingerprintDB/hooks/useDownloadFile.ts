@@ -1,6 +1,6 @@
-import { downloadFileFingerprint } from "@/services/awsService";
+import { downloadFileFingerprint } from "@/shared/api/fingerprintsDB";
 import useSWRMutation from "swr/mutation";
-import { FetchFileParams } from "../types";
+import { FetchFileParams } from "../../../app/fingerprint-db/types";
 
 export const useDownloadFile = () => {
   const { trigger, isMutating } = useSWRMutation(

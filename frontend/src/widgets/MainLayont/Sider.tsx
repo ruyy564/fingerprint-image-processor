@@ -7,10 +7,12 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
-import { Profile } from "./Profile";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+
+import { Profile } from "@/features/Profile";
+import { useWindowSize } from "@/shared/hooks/useWindowSize";
 
 const keysMenu = {
   "/": "1",
@@ -22,6 +24,7 @@ export const Sider = () => {
   const session = useSession();
   const pathname = usePathname();
 
+  const { windowWidth } = useWindowSize();
   const [collapsed, setCollapsed] = useState(false);
 
   const menuItems = [
@@ -53,8 +56,8 @@ export const Sider = () => {
 
   return (
     <Layout.Sider
-      collapsible
-      collapsed={collapsed}
+      collapsible={windowWidth > 1000}
+      collapsed={windowWidth > 1000 ? collapsed : true}
       onCollapse={(value) => setCollapsed(value)}
       theme="light"
       width={320}
