@@ -1,16 +1,20 @@
 "use client";
 
-import { Flex, Form, Typography } from "antd";
-import Image from "next/image";
+import { Button, Flex, Form, Select, Space, Typography } from "antd";
 
-import { SelectFilelist } from "./SelectFilelist";
 import { UploadFingerprintImage } from "./UploadFingerprintImage";
-import { SubmitButton } from "./SubmitButton";
 
-import { useMatchFingerprint } from "@/entities/fingerprintDB";
+import { useGetFileList, useMatchFingerprint } from "@/entities/fingerprintDB";
+import { useMemo } from "react";
+import { ResultMatches } from "./ResultMatches";
 
 export const FormFile = () => {
   const { data, isLoading, trigger } = useMatchFingerprint();
+  const { fileList, isLoadingFileList } = useGetFileList();
+
+  const options = useMemo(() => {
+    return fileList?.map((item) => ({ value: item, label: item }));
+  }, [fileList]);
 
   const onFinish = (values: any) => {
     trigger(values);
@@ -18,29 +22,48 @@ export const FormFile = () => {
 
   return (
     <Flex vertical gap={15}>
-      <Form onFinish={onFinish}>
-        <SelectFilelist />
+      <Typography.Title level={5}>
+        Форма выбора данных для поиска наиболее похожего изображения:
+      </Typography.Title>
+      <Form
+        onFinish={onFinish}
+        style={{ maxWidth: 600 }}
+        variant="filled"
+        labelWrap
+      >
+        <Form.Item
+          label="Выберете zip-файл для сравнения"
+          name="filename"
+          rules={[
+            { required: true, message: "Пожалуйста, загрузите изображение!" },
+          ]}
+        >
+          <Select
+            loading={isLoadingFileList}
+            disabled={isLoadingFileList}
+            options={options}
+            placeholder={"Выберете файл с отпечатками пальцев для сравения"}
+            style={{ width: 300 }}
+          />
+        </Form.Item>
         <UploadFingerprintImage />
-        <SubmitButton />
+        <Form.Item>
+          <Space>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={isLoading || isLoadingFileList}
+              disabled={isLoading || isLoadingFileList}
+            >
+              Найти похожее
+            </Button>
+            <Button danger htmlType="reset">
+              Сбросить
+            </Button>
+          </Space>
+        </Form.Item>
       </Form>
-
-      {data && <Typography.Text>Score: {data.score}</Typography.Text>}
-      {data && (
-        <Typography.Text>
-          Название похожего файла: {data.foundImage}
-        </Typography.Text>
-      )}
-      {data && (
-        <Image
-          src={`data:image/jpeg;base64,${data.matchesImageBase64
-            .replace("b'", "")
-            .replace("'", "")}`}
-          width={150}
-          height={150}
-          priority
-          alt={"результат сравенения изображений"}
-        />
-      )}
+      <ResultMatches data={data} />
     </Flex>
   );
 };

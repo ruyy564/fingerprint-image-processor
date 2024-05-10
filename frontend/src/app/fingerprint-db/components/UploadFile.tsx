@@ -15,6 +15,7 @@ export const UploadFiles = () => {
         onRemove={onRemoveFile}
         fileList={fileList}
         multiple={false}
+        maxCount={1}
         beforeUpload={(file) => {
           const isZIP = file.type === "application/x-zip-compressed";
 

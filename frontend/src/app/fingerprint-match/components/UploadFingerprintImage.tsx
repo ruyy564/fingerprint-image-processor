@@ -1,16 +1,16 @@
 "use client";
 
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Flex, Form, Upload, UploadFile, message } from "antd";
-import { useState } from "react";
+import { Button, Form, Upload, message } from "antd";
 
 const normFile = (e: any) => {
-  console.log("Upload event:", e);
   if (Array.isArray(e)) {
     return e;
   }
   return e?.fileList[0];
 };
+
+const acceptFileTypes = ["image/png", "image/bmp", "image/jpeg", "image/jpg"];
 
 export const UploadFingerprintImage = () => {
   return (
@@ -23,15 +23,19 @@ export const UploadFingerprintImage = () => {
     >
       <Upload
         multiple={false}
+        maxCount={1}
+        listType="picture"
         beforeUpload={(file) => {
-          const isImage = file.type === "image/png";
+          const isImage = acceptFileTypes.includes(file.type);
 
-          // if (!isImage) {
-          //   message.error(`${file.name} это не png-файл`);
-          //   return false;
-          // }
+          if (!isImage) {
+            message.error(`${file.name} это не png-файл`);
+            return false;
+          }
+
+          return false;
         }}
-        // accept={".png"}
+        accept={".png,.BMP,.jpeg,.jpg"}
       >
         <Button icon={<UploadOutlined />}>
           Выберете png-файл для сравнения

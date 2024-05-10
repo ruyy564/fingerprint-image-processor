@@ -1,6 +1,7 @@
 import { downloadFileFingerprint } from "@/shared/api/fingerprintsDB";
 import useSWRMutation from "swr/mutation";
 import { FetchFileParams } from "../../../app/fingerprint-db/types";
+import { message } from "antd";
 
 export const useDownloadFile = () => {
   const { trigger, isMutating } = useSWRMutation(
@@ -18,6 +19,9 @@ export const useDownloadFile = () => {
         document.body.appendChild(link);
         link.click();
         link.parentNode!.removeChild(link);
+      },
+      onError: (err) => {
+        message.error(err?.message);
       },
     }
   );

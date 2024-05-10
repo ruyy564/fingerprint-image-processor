@@ -1,4 +1,5 @@
 import { getListFilesFingerprints } from "@/shared/api/fingerprintsDB";
+import { message } from "antd";
 import useSWR from "swr";
 
 export const useGetFileList = () => {
@@ -6,12 +7,14 @@ export const useGetFileList = () => {
     data: fileList,
     isLoading: isLoadingFileList,
     isValidating,
-    error,
-  } = useSWR<string[]>("/list-fingerprints", getListFilesFingerprints);
+  } = useSWR<string[]>("/list-fingerprints", getListFilesFingerprints, {
+    onError: (err) => {
+      message.error(err?.message);
+    },
+  });
 
   return {
     fileList,
     isLoadingFileList: isLoadingFileList || isValidating,
-    error,
   };
 };

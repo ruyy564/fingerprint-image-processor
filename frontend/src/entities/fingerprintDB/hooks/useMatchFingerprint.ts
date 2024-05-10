@@ -19,9 +19,6 @@ export const useMatchFingerprint = () => {
       return matchFingerprints(body);
     },
     {
-      onSuccess: (res) => {
-        console.log("res", res);
-      },
       onError: (err) => {
         message.error(err.message);
       },

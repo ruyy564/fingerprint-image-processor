@@ -1,5 +1,5 @@
 import { uploadFileFingerprint } from "@/shared/api/fingerprintsDB";
-import { GetProp, UploadFile, UploadProps } from "antd";
+import { GetProp, UploadFile, UploadProps, message } from "antd";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
@@ -16,13 +16,16 @@ export const useUploadFile = () => {
     () => {
       const formData = new FormData();
       formData.append("file", fileList[0] as FileType);
-      console.log("up", formData, fileList[0]);
+
       return uploadFileFingerprint(formData);
     },
     {
       onSuccess: () => {
         mutate("/list-fingerprints");
         setFileList([]);
+      },
+      onError: (err) => {
+        message.error(err?.message);
       },
     }
   );
