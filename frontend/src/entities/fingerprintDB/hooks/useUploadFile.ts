@@ -1,7 +1,7 @@
 import { uploadFileFingerprint } from "@/shared/api/fingerprintsDB";
 import { GetProp, UploadFile, UploadProps } from "antd";
 import { useState } from "react";
-import { mutate, useSWRConfig } from "swr";
+import { useSWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
@@ -16,8 +16,8 @@ export const useUploadFile = () => {
     () => {
       const formData = new FormData();
       formData.append("file", fileList[0] as FileType);
-
-      uploadFileFingerprint(formData);
+      console.log("up", formData, fileList[0]);
+      return uploadFileFingerprint(formData);
     },
     {
       onSuccess: () => {

@@ -1,6 +1,7 @@
 import { fetchWrapper } from "./fetchWrapper";
 
 const awsPrefix = "/aws";
+const analyzePrefix = "/analyze";
 
 export const getListFilesFingerprints = async () => {
   const data = await fetchWrapper(`${awsPrefix}/list-fingerprints`);
@@ -52,6 +53,25 @@ export const uploadFileFingerprint = async (file: FormData) => {
 
   if (data.ok) {
     return data.body;
+  }
+
+  throw new Error(data.statusText);
+};
+
+export const matchFingerprints = async (body: {
+  filename: string;
+  file: FormData;
+}) => {
+  const data = await fetchWrapper(
+    `${analyzePrefix}/match-fingerprints?filename=${body.filename}`,
+    {
+      method: "POST",
+      body: body.file,
+    }
+  );
+
+  if (data.ok) {
+    return data.json();
   }
 
   throw new Error(data.statusText);
