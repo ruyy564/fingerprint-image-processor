@@ -16,18 +16,19 @@ export const ResultMatches: FC<ResultMatchesProps> = ({ data }) => {
     return null;
   }
 
+  const image = `data:image/jpeg;base64,${data.matchesImageBase64
+    .replace("b'", "")
+    .replace("'", "")}`;
+
   return (
     <>
-      <Typography.Title>Результат:</Typography.Title>
-
-      <Typography.Text>Score: {data.score}</Typography.Text>
+      <Typography.Title level={5}>Результат:</Typography.Title>
+      <Typography.Text>Сходство: {data.score} %</Typography.Text>
       <Typography.Text>
         Название похожего файла: {data.foundImage}
       </Typography.Text>
       <Image
-        src={`data:image/jpeg;base64,${data.matchesImageBase64
-          .replace("b'", "")
-          .replace("'", "")}`}
+        src={image}
         width={200}
         height={150}
         priority

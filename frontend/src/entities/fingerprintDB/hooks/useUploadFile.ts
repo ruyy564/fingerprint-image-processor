@@ -11,7 +11,7 @@ export const useUploadFile = () => {
 
   const { mutate } = useSWRConfig();
 
-  const { trigger } = useSWRMutation(
+  const { trigger, isMutating } = useSWRMutation(
     `/upload-file`,
     () => {
       const formData = new FormData();
@@ -36,5 +36,11 @@ export const useUploadFile = () => {
 
   const onRemoveFile = () => setFileList([]);
 
-  return { uploadFileHandler, onRemoveFile, fileList, setFileList };
+  return {
+    uploadFileHandler,
+    onRemoveFile,
+    fileList,
+    setFileList,
+    isLoading: isMutating,
+  };
 };

@@ -6,7 +6,7 @@ import { Button, Flex, Upload, message } from "antd";
 import { useUploadFile } from "@/entities/fingerprintDB/hooks";
 
 export const UploadFiles = () => {
-  const { fileList, setFileList, uploadFileHandler, onRemoveFile } =
+  const { fileList, isLoading, setFileList, uploadFileHandler, onRemoveFile } =
     useUploadFile();
 
   return (
@@ -34,7 +34,7 @@ export const UploadFiles = () => {
         </Button>
       </Upload>
       {fileList.length !== 0 && (
-        <Button type="primary" onClick={uploadFileHandler}>
+        <Button type="primary" onClick={uploadFileHandler} loading={isLoading}>
           Загрузить в БД
         </Button>
       )}
