@@ -7,3 +7,5 @@ numpy
 opencv-python
 boto3
 requests
+keras
+keras-preprocessing
