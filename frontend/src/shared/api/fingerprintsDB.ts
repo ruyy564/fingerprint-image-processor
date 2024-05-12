@@ -76,3 +76,16 @@ export const matchFingerprints = async (body: {
 
   throw new Error(data.statusText);
 };
+
+export const generateFingerprints = async (body: any) => {
+  const data = await fetchWrapper(`${analyzePrefix}/generate-fingerprints`, {
+    method: "POST",
+    body: body,
+  });
+
+  if (data.ok) {
+    return data.blob();
+  }
+
+  throw new Error(data.statusText);
+};

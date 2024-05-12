@@ -6,7 +6,7 @@ type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
 export const useMatchFingerprint = () => {
   const { data, trigger, isMutating } = useSWRMutation(
-    `/upload-file`,
+    `/match-file`,
     (_: string, { arg }: any) => {
       const formData = new FormData();
       formData.append("file", arg.file.originFileObj as FileType);

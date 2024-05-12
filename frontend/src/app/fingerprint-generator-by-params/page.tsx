@@ -1,8 +1,8 @@
 import CustomHeader from "@/shared/components/Header";
 import MainLayout from "@/shared/components/MainLayout";
-import { Skeleton } from "antd";
 import Title from "antd/es/typography/Title";
 import { Metadata } from "next";
+import { FormFile } from "./components/FormFile";
 
 export const metadata: Metadata = {
   title:
@@ -19,7 +19,7 @@ export default function FingerprintGeneratorByParams() {
         </Title>
       </CustomHeader>
       <MainLayout>
-        <Skeleton />
+        <FormFile />
       </MainLayout>
     </>
   );
