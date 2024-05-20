@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from routers.aws import router_aws
 from routers.analyze_fingerprint import router_analyze_fingerprints
+from routers.vae import router_vae
+
 
 # инициализация FastAPI
 app = FastAPI()
@@ -20,8 +22,10 @@ app.add_middleware(
 
 # API для работы с AWS
 app.include_router(router_aws)
-# APL для работы с отпечатками пальцев
+# API для работы с отпечатками пальцев
 app.include_router(router_analyze_fingerprints)
+# API для работы с VAE
+app.include_router(router_vae)
 
 
 # Тест API

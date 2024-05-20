@@ -29,14 +29,16 @@ async def generate_fingerprints(rotation_range, horizontal_flip, width_shift_ran
                 samples = expand_dims(data, 0)
 
                 # Инициализация генератора изображений
-                datagen = ImageDataGenerator(rotation_range=rotation_range, horizontal_flip=horizontal_flip, width_shift_range=width_shift_range, height_shift_range=height_shift_range, zoom_range=zoom_range)
+                datagen = ImageDataGenerator(rotation_range=rotation_range, horizontal_flip=horizontal_flip,
+                                             width_shift_range=width_shift_range, height_shift_range=height_shift_range, zoom_range=zoom_range)
 
                 # Создание итератора для генератора изображений
                 it = datagen.flow(samples, batch_size=1)
                 for i in range(count_generated_image):
                     batch = it.next()
                     image = batch[0].astype('uint8')
-
+                    print(image)
+                    break
                     # Добавление изображения в zip
                     zf.writestr(f'{i}_{filename}', cv2.imencode(
                         '.jpg', image)[1].tobytes())

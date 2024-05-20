@@ -9,3 +9,4 @@ boto3
 requests
 keras
 keras-preprocessing
+tensorflow
