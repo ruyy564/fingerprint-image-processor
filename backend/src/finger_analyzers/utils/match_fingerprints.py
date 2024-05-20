@@ -110,4 +110,4 @@ async def match_fingerprints(filename: str, file, user):
         )
     except Exception:
         raise HTTPException(
-            status_code=403, detail="Image comparison error")
+            status_code=400, detail="Image comparison error")

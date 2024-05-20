@@ -15,4 +15,4 @@ async def upload_files(files, user):
 
         return Response(status_code=200)
     except Exception:
-        raise HTTPException(status_code=403, detail="Files are not uploaded")
+        raise HTTPException(status_code=400, detail="Files are not uploaded")

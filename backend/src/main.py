@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers.aws import router_aws
-from routers.analyze_fingerprint import router_analyze_fingerprints
-from routers.vae import router_vae
+from aws.router import router_aws
+from finger_analyzers.router import router_analyze_fingerprints
+from vae.router import router_vae
 
 
 # инициализация FastAPI

@@ -37,8 +37,7 @@ async def generate_fingerprints(rotation_range, horizontal_flip, width_shift_ran
                 for i in range(count_generated_image):
                     batch = it.next()
                     image = batch[0].astype('uint8')
-                    print(image)
-                    break
+
                     # Добавление изображения в zip
                     zf.writestr(f'{i}_{filename}', cv2.imencode(
                         '.jpg', image)[1].tobytes())
@@ -55,6 +54,5 @@ async def generate_fingerprints(rotation_range, horizontal_flip, width_shift_ran
             }
         )
     except Exception as e:
-        print(e)
         raise HTTPException(
-            status_code=403, detail="Image generator error")
+            status_code=400, detail="Image generator error")

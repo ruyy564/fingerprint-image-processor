@@ -118,7 +118,7 @@ def create_model(latent_dim, image_size):
 def load_encoder():
     with keras.saving.custom_object_scope({"Sampling": Sampling}):
         encoder = keras.models.load_model(
-            f'{os.getcwd()}/encoder_model0.h5', compile=False)
+            f'{os.getcwd()}/vae/models/encoder_model0.h5', compile=False)
     return encoder
 
 
@@ -126,7 +126,7 @@ def load_encoder():
 def load_decoder():
     with keras.saving.custom_object_scope({"Sampling": Sampling}):
         decoder = keras.models.load_model(
-            f'{os.getcwd()}/decoder_model0.h5', compile=False)
+            f'{os.getcwd()}/vae/models/decoder_model0.h5', compile=False)
     return decoder
 
 
@@ -174,6 +174,5 @@ def generate_images(count=5, latent_dim=latent_dim):
             }
         )
     except Exception as e:
-        print(e)
         raise HTTPException(
-            status_code=403, detail="Image generator error")
+            status_code=400, detail="Image generator error")

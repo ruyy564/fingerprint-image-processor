@@ -1,5 +1,6 @@
 from fastapi import APIRouter
-from utils.VAE import generate_images
+
+from vae.utils.vae_model import generate_images
 
 router_vae = APIRouter(prefix='/vae')
 

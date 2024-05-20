@@ -19,7 +19,7 @@
 
 ### pip install -r requirements.txt
 
-## Запуск:
+## Запуск из папки src:
 
 ### uvicorn main:app --reload --port 8080
 

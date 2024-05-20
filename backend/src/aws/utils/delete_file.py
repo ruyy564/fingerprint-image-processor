@@ -13,4 +13,4 @@ async def delete_file(filename: str, user):
 
         return Response(status_code=200)
     except Exception:
-        raise HTTPException(status_code=403, detail="The file is not deleted")
+        raise HTTPException(status_code=400, detail="The file is not deleted")

@@ -19,4 +19,4 @@ async def download_file(filename: str, user):
         )
     except Exception:
         raise HTTPException(
-            status_code=403, detail="Unable to download this file")
+            status_code=400, detail="Unable to download this file")
