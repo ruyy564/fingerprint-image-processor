@@ -192,7 +192,7 @@ async def image_prepare(file):
 
 
 # обучить vae
-async def fit_vae(file, epochs=1, batch_size=128):
+async def fit_vae(file, epochs: int | None = 1, batch_size: int | None = 128):
     try:
         # создание модели
         vae = create_model()
@@ -223,6 +223,7 @@ async def fit_vae(file, epochs=1, batch_size=128):
             }
         )
     except Exception as e:
+        print(e)
         raise HTTPException(
             status_code=400, detail="Vae fit error")
 

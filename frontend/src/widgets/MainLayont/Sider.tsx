@@ -3,9 +3,11 @@ import { Flex, Layout, Menu } from "antd";
 import { useState } from "react";
 import {
   CloudServerOutlined,
+  FileImageOutlined,
   FileZipOutlined,
   HomeOutlined,
   SearchOutlined,
+  SlidersOutlined,
 } from "@ant-design/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,7 +21,9 @@ const keysMenu = {
   "/": "1",
   "/fingerprint-match": "2",
   "/fingerprint-generator-by-params": "3",
-  "/fingerprint-db": "4",
+  "/fingerprint-generator-by-vae": "4",
+  "/fingerprint-fit-vae": "5",
+  "/fingerprint-db": "6",
 };
 
 export const Sider = () => {
@@ -60,6 +64,20 @@ export const Sider = () => {
         },
         {
           key: 4,
+          label: (
+            <Link href={"/fingerprint-generator-by-vae"}>
+              Генерация изображений - VAE
+            </Link>
+          ),
+          icon: <FileImageOutlined />,
+        },
+        {
+          key: 5,
+          label: <Link href={"/fingerprint-fit-vae"}>Обучение VAE</Link>,
+          icon: <SlidersOutlined />,
+        },
+        {
+          key: 6,
           label: <Link href={"/fingerprint-db"}>Набор отпечатков пальцев</Link>,
           icon: <CloudServerOutlined />,
         },

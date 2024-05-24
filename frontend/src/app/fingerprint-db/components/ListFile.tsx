@@ -6,7 +6,7 @@ import {
   useDeleteFile,
   useGetFileList,
   useDownloadFile,
-} from "@/entities/fingerprintDB/hooks";
+} from "@/entities/fingerprint/hooks";
 
 import style from "./ListFIle.module.css";
 

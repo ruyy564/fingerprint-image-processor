@@ -2,6 +2,7 @@ import { fetchWrapper } from "./fetchWrapper";
 
 const awsPrefix = "/aws";
 const analyzePrefix = "/analyze";
+const vaePrefix = "/vae";
 
 export const getListFilesFingerprints = async () => {
   const data = await fetchWrapper(`${awsPrefix}/list-fingerprints`);
@@ -79,6 +80,32 @@ export const matchFingerprints = async (body: {
 
 export const generateFingerprints = async (body: any) => {
   const data = await fetchWrapper(`${analyzePrefix}/generate-fingerprints`, {
+    method: "POST",
+    body: body,
+  });
+
+  if (data.ok) {
+    return data.blob();
+  }
+
+  throw new Error(data.statusText);
+};
+
+export const generateFingerprintsByVAE = async (body: any) => {
+  const data = await fetchWrapper(`${vaePrefix}/predict`, {
+    method: "POST",
+    body: body,
+  });
+
+  if (data.ok) {
+    return data.blob();
+  }
+
+  throw new Error(data.statusText);
+};
+
+export const fitVAE = async (body: any) => {
+  const data = await fetchWrapper(`${vaePrefix}/fit`, {
     method: "POST",
     body: body,
   });

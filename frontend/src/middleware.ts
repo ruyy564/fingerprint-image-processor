@@ -5,5 +5,7 @@ export const config = {
     "/fingerprint-db",
     "/fingerprint-match",
     "/fingerprint-generator-by-params",
+    "/fingerprint-generator-by-vae",
+    "/fingerprint-fit-vae",
   ],
 };

@@ -4,7 +4,7 @@ import { Button, Flex, Form, Select, Space, Typography } from "antd";
 
 import { UploadFingerprintImage } from "./UploadFingerprintImage";
 
-import { useGetFileList, useMatchFingerprint } from "@/entities/fingerprintDB";
+import { useGetFileList, useMatchFingerprint } from "@/entities/fingerprint";
 import { useMemo } from "react";
 import { ResultMatches } from "./ResultMatches";
 
