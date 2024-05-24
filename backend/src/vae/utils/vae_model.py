@@ -1,12 +1,20 @@
+import csv
 import io
+import json
 import os
+import re
 import zipfile
 import cv2
 from fastapi import HTTPException, Response
+import numpy as np
 import tensorflow as tf
 import keras
 from keras import layers
-
+import pandas as pd
+from keras_preprocessing.image import img_to_array
+from sklearn.model_selection import train_test_split
+from ast import literal_eval
+import h5py
 
 # основные настройки для генерации изображений
 latent_dim = int(os.getenv("vae_latent_dim"))  # размер скрытого пространства
@@ -86,7 +94,7 @@ def get_encoder(latent_dim=latent_dim, image_size=image_size):
     encoder = keras.Model(
         encoder_inputs, [z_mean, z_log_var, z], name="encoder")
     encoder.summary()
-    return encoder()
+    return encoder
 
 
 # создание модели декодера
@@ -106,7 +114,7 @@ def get_decoder(latent_dim=latent_dim):
 
 
 # создание модели vae
-def create_model(latent_dim, image_size):
+def create_model(latent_dim=latent_dim, image_size=image_size):
     encoder = get_encoder(latent_dim, image_size)
     decoder = get_decoder(latent_dim)
     vae = VAE(encoder, decoder)
@@ -140,10 +148,98 @@ def load_model():
     return vae
 
 
+def image_parse(contents):
+    nparr = np.fromstring(contents, np.uint8)
+    nparr = cv2.imdecode(nparr, cv2.COLOR_BGR2GRAY)
+    data = img_to_array(nparr)
+    data = cv2.resize(data, (image_size, image_size))
+
+    return data
+
+
+def shaffle_images(images):
+    train_X, valid_X = train_test_split(
+        images, test_size=0.2, random_state=13)
+    new_images = np.concatenate([train_X, valid_X], axis=0)
+    del train_X
+    del valid_X
+
+    return new_images
+
+
+async def image_prepare(file):
+    images = []
+
+    # чтение изображение из архива и его подготовка для его изменения
+    contents = await file.read()
+    with zipfile.ZipFile(io.BytesIO(contents), 'r') as zip:
+        for filename in zip.namelist():
+            contents = zip.read(filename)
+            data = image_parse(contents)
+            images.append(data)
+
+    # преобразование в вектор
+    images = np.array(images)
+    images = images.reshape(-1, image_size, image_size, 1)
+
+    # нормализация
+    images = images/np.max(images)
+
+    # перетасовка изображений
+    images = shaffle_images(images)
+
+    return images
+
+
+# обучить vae
+async def fit_vae(file, epochs=1, batch_size=128):
+    try:
+        # создание модели
+        vae = create_model()
+
+        # подготовка изображений
+        images = await image_prepare(file)
+
+        # обучение
+        vae.fit(images, epochs=epochs, batch_size=batch_size)
+
+        # сохранение весов декодера в файл h5
+        weights = vae.decoder.get_weights()
+
+        o = io.BytesIO()
+        with h5py.File(o, 'w') as f:
+            group = f.create_group('weights')
+            for i in range(len(weights)):
+                group[f'weight_{i}'] = weights[i]
+
+        o.seek(0)
+        response = o.read()
+        o.close()
+
+        return Response(
+            content=response,
+            headers={
+                'Content-Disposition': f'attachment;filename=generated.h5',
+            }
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=400, detail="Vae fit error")
+
+
 # сгенерировать изображения
-def generate_images(count=5, latent_dim=latent_dim):
+async def generate_images(file, count=5,  latent_dim=latent_dim):
     try:
         decoder = load_decoder()
+        # # чтение весов из файла
+        if file:
+            contents = await file.read()
+            with h5py.File(io.BytesIO(contents), 'r') as f:
+                weights = []
+                for datasets in f['weights'].keys():  # iterate through datasets
+                    weights.append(f['weights'][datasets])
+                decoder.set_weights(weights)
+
         # получение случайного вектора для создания изображений
         random_vector = tf.random.normal(shape=(count, latent_dim,))
         prediction = decoder.predict(random_vector)
@@ -156,7 +252,6 @@ def generate_images(count=5, latent_dim=latent_dim):
             # предобработка изображений
             image = prediction[i] * 255
             image = image.astype('uint8')
-
             # Добавление изображения в zip
             zf.writestr(f'{i}.BMP', cv2.imencode(
                 '.jpg', image)[1].tobytes())
