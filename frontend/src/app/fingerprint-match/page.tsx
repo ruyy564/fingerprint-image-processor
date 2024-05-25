@@ -14,7 +14,7 @@ export default function FingerprintMatch() {
   return (
     <>
       <CustomHeader>
-        <Title ellipsis>Поиск схожего отпечатка пальцев</Title>
+        <Title ellipsis>Поиска наиболее похожего изображения</Title>
       </CustomHeader>
       <MainLayout>
         <FormFile />

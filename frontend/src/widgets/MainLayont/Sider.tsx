@@ -48,7 +48,7 @@ export const Sider = () => {
           key: 2,
           label: (
             <Link href={"/fingerprint-match"}>
-              Поиск схожего отпечатка пальца
+              Поиск наиболее похожего изображения
             </Link>
           ),
           icon: <SearchOutlined />,
@@ -89,11 +89,11 @@ export const Sider = () => {
 
   return (
     <Layout.Sider
-      collapsible={windowWidth > 1000}
-      collapsed={windowWidth > 1000 ? collapsed : true}
+      collapsible={true}
+      collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
       theme="light"
-      width={320}
+      width={390}
     >
       <Flex
         gap="middle"

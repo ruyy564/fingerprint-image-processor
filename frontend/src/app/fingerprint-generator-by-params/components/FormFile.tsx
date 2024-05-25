@@ -5,16 +5,29 @@ import {
   Flex,
   Form,
   InputNumber,
+  Radio,
+  Select,
   Space,
   Switch,
   Typography,
 } from "antd";
 import { UploadFingerprintImage } from "./UploadFingerprintImage";
-import { useGenerateFingerprints } from "@/entities/fingerprint";
+import {
+  useGenerateFingerprints,
+  useGetFileList,
+} from "@/entities/fingerprint";
 import { DownloadOutlined } from "@ant-design/icons";
+import { useMemo, useState } from "react";
 
 export const FormFile = () => {
   const { data, isLoading, trigger, downloadFile } = useGenerateFingerprints();
+  const { fileList, isLoadingFileList } = useGetFileList();
+
+  const [selectedUploadFile, setSelectedUploadFile] = useState(false);
+
+  const options = useMemo(() => {
+    return fileList?.map((item) => ({ value: item, label: item }));
+  }, [fileList]);
 
   const onFinish = (values: any) => {
     trigger(values);
@@ -31,7 +44,25 @@ export const FormFile = () => {
         labelWrap
         onFinish={onFinish}
       >
-        <UploadFingerprintImage />
+        <Form.Item label="Изображения из файла">
+          <Switch value={selectedUploadFile} onChange={setSelectedUploadFile} />
+        </Form.Item>
+        {selectedUploadFile && <UploadFingerprintImage />}
+        {!selectedUploadFile && (
+          <Form.Item
+            label="Выберете файл из набора отпечатков пальцев"
+            name="filename"
+            rules={[{ required: true, message: "Пожалуйста, выберете файл!" }]}
+          >
+            <Select
+              loading={isLoadingFileList}
+              disabled={isLoadingFileList}
+              options={options}
+              placeholder={"Выберете файл с отпечатками пальцев для сравения"}
+              style={{ width: 300 }}
+            />
+          </Form.Item>
+        )}
         <Form.Item
           name="count_generated_image"
           label="Кол-во генерируемых изображений"

@@ -30,7 +30,7 @@ export const UploadFiles = () => {
         accept={".zip"}
       >
         <Button icon={<UploadOutlined />}>
-          Выберете zip-файл для дабавления в БД
+          Выберете zip-файл для добавления в БД
         </Button>
       </Upload>
       {fileList.length !== 0 && (
