@@ -5,8 +5,7 @@ import { Metadata } from "next";
 import { FormFile } from "./components/FormFile";
 
 export const metadata: Metadata = {
-  title:
-    "Обработка отпечатков пальцев | Генерация изображений отпечатков пальцев по параметрам",
+  title: "Обработка отпечатков пальцев | Аугментация данных",
   description: "Обработка отпечатков пальцев",
 };
 
@@ -14,9 +13,7 @@ export default function FingerprintGeneratorByParams() {
   return (
     <>
       <CustomHeader>
-        <Title ellipsis>
-          Генерация изображений отпечатков пальцев по параметрам
-        </Title>
+        <Title ellipsis>Аугментация данных</Title>
       </CustomHeader>
       <MainLayout>
         <FormFile />

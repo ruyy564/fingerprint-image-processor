@@ -36,7 +36,7 @@ export const FormFile = () => {
   return (
     <Flex vertical gap={15}>
       <Typography.Title level={5}>
-        Форма для генерации изображений по параметрам:
+        Форма выбора данных для аугментации данных:
       </Typography.Title>
       <Form
         style={{ maxWidth: 600 }}

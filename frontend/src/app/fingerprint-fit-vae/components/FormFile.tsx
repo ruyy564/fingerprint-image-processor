@@ -31,7 +31,9 @@ export const FormFile = () => {
 
   return (
     <Flex vertical gap={15}>
-      <Typography.Title level={5}>Форма для обучения VAE:</Typography.Title>
+      <Typography.Title level={5}>
+        Форма выбора данных для обучения VAE:
+      </Typography.Title>
       <Form
         style={{ maxWidth: 600 }}
         variant="filled"

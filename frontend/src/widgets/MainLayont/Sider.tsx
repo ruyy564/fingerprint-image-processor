@@ -4,7 +4,7 @@ import { useState } from "react";
 import {
   CloudServerOutlined,
   FileImageOutlined,
-  FileZipOutlined,
+  CopyOutlined,
   HomeOutlined,
   SearchOutlined,
   SlidersOutlined,
@@ -57,10 +57,10 @@ export const Sider = () => {
           key: 3,
           label: (
             <Link href={"/fingerprint-generator-by-params"}>
-              Генерация изображений
+              Аугментация данных
             </Link>
           ),
-          icon: <FileZipOutlined />,
+          icon: <CopyOutlined />,
         },
         {
           key: 4,

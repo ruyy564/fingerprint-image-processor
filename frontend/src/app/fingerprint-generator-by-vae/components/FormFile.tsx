@@ -24,7 +24,7 @@ export const FormFile = () => {
   return (
     <Flex vertical gap={15}>
       <Typography.Title level={5}>
-        Форма для генерации изображений:
+        Форма выбора данных для генерации изображений:
       </Typography.Title>
       <Form
         style={{ maxWidth: 600 }}
